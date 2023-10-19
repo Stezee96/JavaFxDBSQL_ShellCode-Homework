@@ -178,6 +178,52 @@ public class ConnDbOps {
             e.printStackTrace();
         }
     }
+    // edit user
+    public void editUser(String name, String newName, String newEmail, int newSalary) {
+        try {
+            Connection conn = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
+            String sql = "UPDATE users SET name = ?, email = ?, salary = ? WHERE name = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setString(1, newName);
+            preparedStatement.setString(2, newEmail);
+            preparedStatement.setInt(3, newSalary);
+            preparedStatement.setString(4, name);
 
+            int rowsUpdated = preparedStatement.executeUpdate();
+
+            if (rowsUpdated > 0) {
+                System.out.println("User " + name + " updated successfully.");
+            } else {
+                System.out.println("User " + name + " not found.");
+            }
+
+            preparedStatement.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+// delete user
+    public void deleteUser(String name) {
+        try {
+            Connection conn = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
+            String sql = "DELETE FROM users WHERE name = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setString(1, name);
+
+            int rowsDeleted = preparedStatement.executeUpdate();
+
+            if (rowsDeleted > 0) {
+                System.out.println("User " + name + " deleted successfully.");
+            } else {
+                System.out.println("User " + name + " not found.");
+            }
+
+            preparedStatement.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     
 }
